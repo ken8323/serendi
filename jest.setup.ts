@@ -1,5 +1,9 @@
 import '@testing-library/jest-dom'
 
 beforeEach(() => {
-  localStorage.clear()
+  try {
+    localStorage.clear()
+  } catch {
+    // not available in Node environment
+  }
 })
