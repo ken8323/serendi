@@ -28,13 +28,14 @@ export async function POST(request: Request) {
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
   const message = await client.messages.create({
-    model: 'claude-3-5-haiku-20241022',
+    model: 'claude-haiku-4-5-20251001',
     max_tokens: 1024,
     system: SYSTEM_PROMPT,
     messages: [{ role: 'user', content: `職業: ${occupation}\n専門分野: ${domain}` }],
   })
 
-  const text = message.content[0].type === 'text' ? message.content[0].text : ''
+  const raw = message.content[0].type === 'text' ? message.content[0].text : ''
+  const text = raw.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim()
 
   let parsed: Omit<Sheet, 'id' | 'createdAt'>
   try {
