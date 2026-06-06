@@ -1,6 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import ShareCard from '@/components/ShareCard'
 import type { Sheet } from '@/lib/types'
 
 type Props = {
@@ -12,6 +14,8 @@ type Props = {
 }
 
 export default function ResultScreen({ sheet, isSaved, onSave, onRedraw, onBack }: Props) {
+  const [showShare, setShowShare] = useState(false)
+
   return (
     <div className="min-h-screen flex flex-col px-8 py-10 max-w-lg mx-auto">
       <div className="flex justify-between items-center mb-9">
@@ -21,17 +25,25 @@ export default function ResultScreen({ sheet, isSaved, onSave, onRedraw, onBack 
         >
           ← BACK
         </button>
-        <button
-          onClick={onSave}
-          disabled={isSaved}
-          className={`text-xs tracking-[2px] font-bold border px-3 py-2 transition-colors ${
-            isSaved
-              ? 'border-gray-200 text-gray-300 cursor-default'
-              : 'border-black text-black hover:bg-black hover:text-white'
-          }`}
-        >
-          {isSaved ? '★ SAVED' : '★ SAVE'}
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setShowShare(true)}
+            className="text-xs tracking-[2px] font-bold border px-3 py-2 border-gray-200 text-gray-400 hover:border-black hover:text-black transition-colors"
+          >
+            ↑ SHARE
+          </button>
+          <button
+            onClick={onSave}
+            disabled={isSaved}
+            className={`text-xs tracking-[2px] font-bold border px-3 py-2 transition-colors ${
+              isSaved
+                ? 'border-gray-200 text-gray-300 cursor-default'
+                : 'border-black text-black hover:bg-black hover:text-white'
+            }`}
+          >
+            {isSaved ? '★ SAVED' : '★ SAVE'}
+          </button>
+        </div>
       </div>
 
       <p className="text-xs tracking-[4px] font-bold text-gray-300 mb-2">
@@ -82,6 +94,26 @@ export default function ResultScreen({ sheet, isSaved, onSave, onRedraw, onBack 
           ↻ DRAW AGAIN
         </Button>
       </div>
+
+      {showShare && (
+        <div
+          className="fixed inset-0 bg-black/60 z-50 flex items-end justify-center"
+          onClick={() => setShowShare(false)}
+        >
+          <div
+            className="bg-white w-full max-w-lg p-6 pb-8 overflow-y-auto max-h-[90vh]"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <p className="text-xs tracking-[3px] font-bold text-gray-400">SHARE THIS CARD</p>
+              <button onClick={() => setShowShare(false)} className="text-xs tracking-[2px] text-gray-300 font-bold">
+                ✕ CLOSE
+              </button>
+            </div>
+            <ShareCard sheet={sheet} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
