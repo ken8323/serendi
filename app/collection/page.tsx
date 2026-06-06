@@ -58,9 +58,15 @@ function SheetModal({ sheet, onClose, onDelete }: {
         <p className="text-xs tracking-[3px] font-bold text-gray-400 mb-3">NEXT</p>
         <div className="flex flex-wrap gap-2">
           {sheet.next_keywords.map((kw, i) => (
-            <span key={i} className="text-xs text-gray-400 border border-gray-200 px-3 py-1.5 tracking-wide">
+            <a
+              key={i}
+              href={`https://www.google.com/search?q=${encodeURIComponent(kw)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-gray-400 border border-gray-200 px-3 py-1.5 tracking-wide hover:border-black hover:text-black transition-colors"
+            >
               {kw}
-            </span>
+            </a>
           ))}
         </div>
       </div>
@@ -86,7 +92,17 @@ export default function CollectionPage() {
       <div className="flex justify-between items-baseline mb-12">
         <Link href="/" className="text-xs tracking-[2px] font-bold text-gray-300">← HOME</Link>
         <span className="text-lg font-black tracking-tight text-black">Collection</span>
-        <span className="text-xs tracking-[2px] font-bold text-gray-300">{sheets.length} saved</span>
+        <div className="flex items-center gap-4">
+          {sheets.length > 0 && (
+            <button
+              onClick={() => setSelected(sheets[Math.floor(Math.random() * sheets.length)])}
+              className="text-xs tracking-[2px] font-bold text-gray-300 border-b border-gray-200 pb-0.5 hover:text-black hover:border-black transition-colors"
+            >
+              REDISCOVER
+            </button>
+          )}
+          <span className="text-xs tracking-[2px] font-bold text-gray-300">{sheets.length} saved</span>
+        </div>
       </div>
 
       {sheets.length === 0 ? (
