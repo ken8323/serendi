@@ -61,12 +61,15 @@ export default function ResultScreen({ sheet, isSaved, onSave, onRedraw, onBack 
       <p className="text-xs tracking-[3px] font-bold text-gray-400 mb-3">NEXT</p>
       <div className="flex flex-wrap gap-2 mb-auto">
         {sheet.next_keywords.map((kw, i) => (
-          <span
+          <a
             key={i}
-            className="text-xs text-gray-400 border border-gray-200 px-3 py-1.5 tracking-wide"
+            href={`https://www.google.com/search?q=${encodeURIComponent(kw)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-gray-400 border border-gray-200 px-3 py-1.5 tracking-wide hover:border-black hover:text-black transition-colors"
           >
             {kw}
-          </span>
+          </a>
         ))}
       </div>
 
