@@ -21,7 +21,11 @@ export default function ShareCard({ sheet }: Props) {
       const file = new File([blob], `serendi-${sheet.id}.png`, { type: 'image/png' })
 
       if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: sheet.theme })
+        try {
+          await navigator.share({ files: [file], title: sheet.theme })
+        } catch (e) {
+          if (e instanceof Error && e.name !== 'AbortError') throw e
+        }
       } else {
         const a = document.createElement('a')
         a.href = dataUrl
