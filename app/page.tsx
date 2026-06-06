@@ -65,7 +65,13 @@ export default function Home() {
   }
 
   if (screen === 'setup') {
-    return <SetupScreen onComplete={handleSetupComplete} />
+    return (
+      <SetupScreen
+        onComplete={handleSetupComplete}
+        initialProfile={profile ?? undefined}
+        onBack={profile ? () => setScreen('gacha') : undefined}
+      />
+    )
   }
 
   if (screen === 'result' && currentSheet) {
@@ -80,5 +86,5 @@ export default function Home() {
     )
   }
 
-  return <GachaScreen isLoading={isLoading} onDraw={handleDraw} />
+  return <GachaScreen isLoading={isLoading} onDraw={handleDraw} onEditProfile={() => setScreen('setup')} />
 }

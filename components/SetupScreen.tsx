@@ -6,12 +6,15 @@ import type { UserProfile } from '@/lib/types'
 
 type Props = {
   onComplete: (profile: UserProfile) => void
+  initialProfile?: UserProfile
+  onBack?: () => void
 }
 
-export default function SetupScreen({ onComplete }: Props) {
-  const [occupation, setOccupation] = useState('')
-  const [domain, setDomain] = useState('')
+export default function SetupScreen({ onComplete, initialProfile, onBack }: Props) {
+  const [occupation, setOccupation] = useState(initialProfile?.occupation ?? '')
+  const [domain, setDomain] = useState(initialProfile?.domain ?? '')
 
+  const isEditing = !!initialProfile
   const canSubmit = occupation.trim().length > 0 && domain.trim().length > 0
 
   function handleSubmit(e: React.FormEvent) {
@@ -23,9 +26,17 @@ export default function SetupScreen({ onComplete }: Props) {
   return (
     <div className="min-h-screen flex flex-col justify-center px-6 py-16 max-w-sm mx-auto">
       <div className="mb-12">
+        {isEditing && onBack && (
+          <button
+            onClick={onBack}
+            className="text-[8px] tracking-[2px] font-bold text-gray-300 mb-8 block"
+          >
+            ← BACK
+          </button>
+        )}
         <p className="text-[9px] tracking-[4px] text-gray-300 font-bold mb-3">SERENDI</p>
         <h1 className="text-3xl font-black tracking-tight leading-tight text-black">
-          あなたについて<br />教えてください
+          {isEditing ? 'プロフィールを\n編集する' : 'あなたについて\n教えてください'}
         </h1>
         <p className="mt-4 text-[11px] text-gray-400 leading-relaxed">
           AIがあなたの日常から遠い未知の領域を選ぶために使います。
@@ -60,7 +71,7 @@ export default function SetupScreen({ onComplete }: Props) {
           disabled={!canSubmit}
           className="mt-4 bg-black text-white rounded-none text-[10px] tracking-[3px] font-bold h-12 hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed"
         >
-          START →
+          {isEditing ? 'SAVE →' : 'START →'}
         </Button>
       </form>
     </div>

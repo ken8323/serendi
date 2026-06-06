@@ -5,19 +5,28 @@ import Link from 'next/link'
 type Props = {
   isLoading: boolean
   onDraw: () => void
+  onEditProfile: () => void
 }
 
-export default function GachaScreen({ isLoading, onDraw }: Props) {
+export default function GachaScreen({ isLoading, onDraw, onEditProfile }: Props) {
   return (
     <div className="min-h-screen flex flex-col px-6 py-10 max-w-sm mx-auto">
       <div className="flex justify-between items-baseline mb-16">
         <span className="text-base font-black tracking-tight text-black">Serendi</span>
-        <Link
-          href="/collection"
-          className="text-[8px] tracking-[3px] font-bold text-gray-300 border-b border-gray-200 pb-0.5"
-        >
-          COLLECTION
-        </Link>
+        <div className="flex gap-4">
+          <button
+            onClick={onEditProfile}
+            className="text-[8px] tracking-[3px] font-bold text-gray-300 border-b border-gray-200 pb-0.5"
+          >
+            PROFILE
+          </button>
+          <Link
+            href="/collection"
+            className="text-[8px] tracking-[3px] font-bold text-gray-300 border-b border-gray-200 pb-0.5"
+          >
+            COLLECTION
+          </Link>
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col justify-center gap-6">
