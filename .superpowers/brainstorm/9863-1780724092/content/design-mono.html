@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serendi — Monochrome</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #e8e6e1;
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px 100px;
+  }
+
+  .page-title {
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 5px;
+    color: #aaa;
+    font-weight: 700;
+    margin-bottom: 48px;
+  }
+
+  .screens {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .frame {
+    width: 320px;
+    background: #fff;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .frame-label {
+    background: #111;
+    padding: 9px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .frame-label span {
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: #555;
+    font-weight: 700;
+  }
+  .frame-label strong {
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  /* ── GACHA SCREEN ── */
+  .gacha-screen {
+    padding: 28px 24px 24px;
+    min-height: 460px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .g-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 52px;
+  }
+  .g-logo {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #111;
+  }
+  .g-collection {
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: #ccc;
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 2px;
+  }
+
+  .g-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+
+  .g-kicker {
+    font-size: 8px;
+    letter-spacing: 4px;
+    color: #ccc;
+    font-weight: 700;
+  }
+  .g-headline {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -1.2px;
+    color: #111;
+    line-height: 1.05;
+  }
+  .g-desc {
+    font-size: 10px;
+    color: #bbb;
+    line-height: 1.8;
+    max-width: 210px;
+    border-left: 2px solid #111;
+    padding-left: 12px;
+  }
+
+  .g-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    padding: 16px 20px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .g-btn .arrow { font-size: 16px; font-weight: 300; }
+
+  .g-footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #ddd;
+    text-align: center;
+  }
+
+  /* ── SHEET SCREEN ── */
+  .sheet-screen {
+    padding: 24px;
+    min-height: 460px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .s-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+  .s-back {
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #ccc;
+    font-weight: 700;
+  }
+  .s-save {
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #111;
+    font-weight: 800;
+    border: 1.5px solid #111;
+    border-radius: 2px;
+    padding: 5px 10px;
+    background: none;
+    cursor: pointer;
+  }
+
+  .s-num {
+    font-size: 8px;
+    letter-spacing: 4px;
+    color: #ddd;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .s-title {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    color: #111;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  .s-divider { height: 1px; background: #f0f0f0; margin-bottom: 16px; }
+
+  .s-label {
+    font-size: 7px;
+    letter-spacing: 4px;
+    font-weight: 800;
+    color: #bbb;
+    margin-bottom: 8px;
+  }
+  .s-summary {
+    font-size: 10px;
+    color: #555;
+    line-height: 1.75;
+    margin-bottom: 18px;
+  }
+  .s-points { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+  .s-point { display: flex; gap: 12px; }
+  .s-n {
+    font-size: 8px;
+    font-weight: 800;
+    color: #111;
+    min-width: 14px;
+    margin-top: 2px;
+    border-right: 1.5px solid #111;
+    padding-right: 10px;
+  }
+  .s-t { font-size: 10px; color: #777; line-height: 1.6; }
+
+  .s-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .s-tag {
+    font-size: 8px;
+    color: #bbb;
+    border: 1px solid #e8e8e8;
+    border-radius: 1px;
+    padding: 4px 8px;
+    letter-spacing: 1px;
+  }
+
+  .s-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: center;
+  }
+  .s-redraw {
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: #ccc;
+    font-weight: 700;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* confirm */
+  .approve {
+    display: block;
+    margin: 48px auto 0;
+    background: #111;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    padding: 16px 40px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .approve:hover { opacity: 0.75; }
+  .note {
+    text-align: center;
+    font-size: 9px;
+    color: #bbb;
+    letter-spacing: 2px;
+    margin-top: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-title">SERENDI — MONOCHROME DESIGN</div>
+
+<div class="screens">
+
+  <!-- GACHA -->
+  <div class="frame">
+    <div class="frame-label">
+      <strong>GACHA</strong>
+      <span>01 / 02</span>
+    </div>
+    <div class="gacha-screen">
+      <div class="g-header">
+        <div class="g-logo">Serendi</div>
+        <div class="g-collection">COLLECTION</div>
+      </div>
+      <div class="g-body">
+        <div class="g-kicker">UNKNOWN FIELD</div>
+        <div class="g-headline">知らない<br>世界を、<br>引く。</div>
+        <div class="g-desc">あなたが一生検索しないような未知の領域を、AIが1枚のカードに凝縮します。</div>
+        <button class="g-btn">DRAW <span class="arrow">→</span></button>
+      </div>
+      <div class="g-footer">SWIPE UP TO VIEW COLLECTION</div>
+    </div>
+  </div>
+
+  <!-- SHEET -->
+  <div class="frame">
+    <div class="frame-label">
+      <strong>SHEET</strong>
+      <span>02 / 02</span>
+    </div>
+    <div class="sheet-screen">
+      <div class="s-header">
+        <span class="s-back">← BACK</span>
+        <button class="s-save">★ SAVE</button>
+      </div>
+      <div class="s-num">FIELD — 042</div>
+      <div class="s-title">深海生物の<br>奇妙な生存戦略</div>
+      <div class="s-divider"></div>
+      <div class="s-label">ESSENCE</div>
+      <div class="s-summary">光のない深海で、生物たちは発光・高圧耐性・超低代謝という極端な進化を遂げた。その仕組みは現代の素材科学や医療に応用が始まっている。</div>
+      <div class="s-label">3 POINTS</div>
+      <div class="s-points">
+        <div class="s-point"><span class="s-n">01</span><span class="s-t">水深8000mで生きるカジカは不凍タンパク質で圧壊を防ぐ</span></div>
+        <div class="s-point"><span class="s-n">02</span><span class="s-t">アンコウの発光は共生細菌によるもので自前では光らない</span></div>
+        <div class="s-point"><span class="s-n">03</span><span class="s-t">代謝速度は浅海魚の1/10以下、1食で数ヶ月生き延びる種も</span></div>
+      </div>
+      <div class="s-label">NEXT</div>
+      <div class="s-tags">
+        <span class="s-tag">マリアナ海溝</span>
+        <span class="s-tag">生物発光</span>
+        <span class="s-tag">深海探査</span>
+      </div>
+      <div class="s-footer">
+        <button class="s-redraw">↻ DRAW AGAIN</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<button class="approve" onclick="this.textContent='✓ APPROVED'; try{fetch('/select',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({choice:'monochrome',text:'Monochrome design approved'})})}catch(e){}">このデザインで進める</button>
+<div class="note">— またはターミナルでフィードバック —</div>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<h2>デザイン方向性 — 再提案</h2>
+<p class="subtitle">より洗練されたアプローチを3案</p>
+
+<div class="cards">
+
+  <!-- A: Editorial Black -->
+  <div class="card" data-choice="editorial" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #fff; padding: 0; min-height: 220px; overflow: hidden; border-bottom: 1px solid #e5e5e5;">
+      <div style="background: #0a0a0a; color: white; padding: 10px 16px; font-size: 10px; font-family: 'SF Mono', monospace; letter-spacing: 3px; font-weight: 500;">SERENDI</div>
+      <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-size: 9px; letter-spacing: 3px; color: #999; font-weight: 600;">TODAY'S UNKNOWN</span>
+          <div style="font-size: 20px; font-weight: 800; color: #0a0a0a; line-height: 1.2; letter-spacing: -0.5px;">深海生物の<br>生存戦略</div>
+        </div>
+        <div style="border-top: 1px solid #e5e5e5; padding-top: 12px;">
+          <div style="font-size: 10px; color: #666; line-height: 1.6;">光のない世界で進化した、<br>驚異の生命体たち</div>
+        </div>
+        <div style="margin-top: 4px;">
+          <div style="display: inline-block; background: #0a0a0a; color: white; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 8px 16px; border-radius: 2px;">DRAW</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. エディトリアル</h3>
+      <p>黒×白、強いタイポグラフィ。装飾ゼロで情報だけで魅せる。雑誌・アート系メディアに近い質感。ブランドとして唯一無二に見える。</p>
+    </div>
+  </div>
+
+  <!-- B: Soft Neutral -->
+  <div class="card" data-choice="neutral" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f5f4f0; padding: 0; min-height: 220px; overflow: hidden; border-bottom: 1px solid #e8e6e0;">
+      <div style="background: #f5f4f0; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e8e6e0;">
+        <span style="font-size: 12px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.3px;">Serendi</span>
+        <span style="font-size: 10px; color: #999;">Collection</span>
+      </div>
+      <div style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);">
+          <div style="font-size: 9px; color: #b5a58a; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px;">THEME #042</div>
+          <div style="font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.3; margin-bottom: 6px;">深海生物の生存戦略</div>
+          <div style="font-size: 11px; color: #888; line-height: 1.6;">光のない世界で進化した、驚異の生命体たち</div>
+        </div>
+        <button style="background: #1a1a1a; color: #f5f4f0; border: none; border-radius: 8px; padding: 10px; font-size: 11px; font-weight: 700; letter-spacing: 1px; cursor: pointer; width: 100%;">今日の未知を引く</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. ソフトニュートラル</h3>
+      <p>オフホワイト×ペーパーベージュ。NotionやCraftに近い温かみのある上品さ。カードが紙のノートのように見えて、知識の蓄積感が出る。</p>
+    </div>
+  </div>
+
+  <!-- C: True Dark -->
+  <div class="card" data-choice="truedark" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #111111; padding: 0; min-height: 220px; overflow: hidden;">
+      <div style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222;">
+        <span style="font-size: 12px; font-weight: 700; color: #ffffff; letter-spacing: -0.3px;">Serendi</span>
+        <span style="font-size: 10px; color: #555;">●●○</span>
+      </div>
+      <div style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="border: 1px solid #2a2a2a; border-radius: 12px; padding: 16px;">
+          <div style="font-size: 9px; color: #e8ff6b; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px;">UNKNOWN FIELD</div>
+          <div style="font-size: 16px; font-weight: 700; color: #ffffff; line-height: 1.3; margin-bottom: 6px;">深海生物の生存戦略</div>
+          <div style="font-size: 11px; color: #666; line-height: 1.6;">光のない世界で進化した、驚異の生命体たち</div>
+        </div>
+        <button style="background: transparent; color: #e8ff6b; border: 1px solid #e8ff6b; border-radius: 8px; padding: 10px; font-size: 11px; font-weight: 700; letter-spacing: 1px; cursor: pointer; width: 100%;">DRAW ↗</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. トゥルーダーク</h3>
+      <p>真黒×イエローグリーンのシングルアクセント。Linear・Vercel・Raycastに近いデベロッパー系の質感。少し尖ったブランドイメージ。</p>
+    </div>
+  </div>
+
+</div>

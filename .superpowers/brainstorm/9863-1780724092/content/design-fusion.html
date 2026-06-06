@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serendi — Design Fusion</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #fff;
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  .page-label {
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: #444;
+    margin-bottom: 40px;
+    font-weight: 600;
+  }
+
+  .screens {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .screen {
+    width: 320px;
+    border: 1px solid #1e1e1e;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .screen:hover { border-color: #333; }
+  .screen.selected { border-color: #d4f542; }
+
+  .screen-label {
+    background: #111;
+    border-bottom: 1px solid #1e1e1e;
+    padding: 8px 14px;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: #444;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ── GACHA SCREEN ── */
+  .gacha {
+    background: #0a0a0a;
+    padding: 40px 28px 32px;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+  }
+  .gacha-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 48px;
+  }
+  .logo {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #fff;
+  }
+  .logo span { color: #d4f542; }
+  .nav-link {
+    font-size: 10px;
+    color: #444;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 2px;
+  }
+  .gacha-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 32px;
+  }
+  .eyebrow {
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: #444;
+    font-weight: 700;
+  }
+  .headline {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    color: #fff;
+  }
+  .headline em {
+    font-style: normal;
+    color: #d4f542;
+  }
+  .sub {
+    font-size: 11px;
+    color: #555;
+    line-height: 1.7;
+    max-width: 220px;
+  }
+  .draw-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #d4f542;
+    color: #0a0a0a;
+    border: none;
+    border-radius: 2px;
+    padding: 14px 22px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    cursor: pointer;
+    width: fit-content;
+  }
+  .draw-btn .arrow { font-size: 14px; }
+
+  /* ── SHEET SCREEN ── */
+  .sheet {
+    background: #0a0a0a;
+    padding: 28px;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+  .back {
+    font-size: 10px;
+    color: #444;
+    letter-spacing: 1px;
+  }
+  .save-btn {
+    font-size: 9px;
+    color: #d4f542;
+    border: 1px solid #d4f542;
+    border-radius: 2px;
+    padding: 5px 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    background: transparent;
+    cursor: pointer;
+  }
+  .sheet-eyebrow {
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: #444;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .sheet-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+  .divider {
+    height: 1px;
+    background: #1e1e1e;
+    margin-bottom: 18px;
+  }
+  .section-label {
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: #d4f542;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .summary {
+    font-size: 12px;
+    color: #ccc;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .points {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .point {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .point-num {
+    font-size: 9px;
+    color: #d4f542;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-top: 2px;
+    min-width: 16px;
+  }
+  .point-text {
+    font-size: 11px;
+    color: #aaa;
+    line-height: 1.6;
+  }
+  .keywords {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .keyword {
+    font-size: 9px;
+    color: #555;
+    border: 1px solid #222;
+    border-radius: 2px;
+    padding: 4px 8px;
+    letter-spacing: 1px;
+  }
+  .redraw {
+    margin-top: auto;
+    padding-top: 20px;
+    font-size: 10px;
+    color: #333;
+    letter-spacing: 2px;
+    text-align: center;
+    border-top: 1px solid #1a1a1a;
+    cursor: pointer;
+  }
+  .redraw:hover { color: #555; }
+
+  .caption {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 10px;
+    color: #333;
+    letter-spacing: 2px;
+  }
+
+  .confirm-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #d4f542;
+    color: #0a0a0a;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 12px 28px;
+    border-radius: 2px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border: none;
+    pointer-events: none;
+  }
+  .confirm-bar.visible { opacity: 1; pointer-events: all; }
+</style>
+</head>
+<body>
+
+<div class="page-label">A × C FUSION — SELECT TO CONFIRM</div>
+
+<div class="screens">
+
+  <!-- Gacha Screen -->
+  <div class="screen" id="screen-gacha" onclick="selectScreen(this)">
+    <div class="screen-label">
+      <span>GACHA SCREEN</span>
+      <span>01 / 02</span>
+    </div>
+    <div class="gacha">
+      <div class="gacha-header">
+        <div class="logo">Ser<span>.</span>endi</div>
+        <div class="nav-link">COLLECTION</div>
+      </div>
+      <div class="gacha-body">
+        <div class="eyebrow">UNKNOWN FIELD</div>
+        <div class="headline">今日、あなたが<br>絶対に<em>検索しない</em><br>知識を引く。</div>
+        <div class="sub">あなたの日常から遠く離れた未知の領域を、AIが1枚のカードに凝縮します。</div>
+        <button class="draw-btn">DRAW <span class="arrow">↗</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sheet Screen -->
+  <div class="screen" id="screen-sheet" onclick="selectScreen(this)">
+    <div class="screen-label">
+      <span>SHEET SCREEN</span>
+      <span>02 / 02</span>
+    </div>
+    <div class="sheet">
+      <div class="sheet-header">
+        <span class="back">← BACK</span>
+        <button class="save-btn">★ SAVE</button>
+      </div>
+      <div class="sheet-eyebrow">UNKNOWN FIELD #042</div>
+      <div class="sheet-title">深海生物の<br>奇妙な生存戦略</div>
+      <div class="divider"></div>
+      <div class="section-label">ESSENCE</div>
+      <div class="summary">光のない深海で、生物たちは発光・高圧耐性・超低代謝という3つの極端な進化を遂げた。その仕組みは現代の素材科学や医療に応用が始まっている。</div>
+      <div class="section-label">3 POINTS</div>
+      <div class="points">
+        <div class="point"><span class="point-num">01</span><span class="point-text">水深8000mで生きるカジカは、体内に不凍タンパク質を持ち圧壊を防ぐ</span></div>
+        <div class="point"><span class="point-num">02</span><span class="point-text">アンコウの発光器官は共生細菌によるもので、自前では光らない</span></div>
+        <div class="point"><span class="point-num">03</span><span class="point-text">代謝速度は浅海魚の1/10以下。1食で数ヶ月生き延びる種も存在する</span></div>
+      </div>
+      <div class="section-label">NEXT</div>
+      <div class="keywords">
+        <span class="keyword">マリアナ海溝</span>
+        <span class="keyword">生物発光</span>
+        <span class="keyword">深海探査</span>
+      </div>
+      <div class="redraw">↻ DRAW AGAIN</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="caption">クリックして選択 → 下のボタンで確定</div>
+
+<button class="confirm-bar" id="confirm-btn" onclick="confirmSelection()">このデザインで進める →</button>
+
+<script>
+  let selected = new Set();
+
+  function selectScreen(el) {
+    const id = el.id;
+    if (selected.has(id)) {
+      selected.delete(id);
+      el.classList.remove('selected');
+    } else {
+      selected.add(id);
+      el.classList.add('selected');
+    }
+    document.getElementById('confirm-btn').classList.toggle('visible', selected.size > 0);
+  }
+
+  function confirmSelection() {
+    try {
+      fetch('/select', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({choice: 'fusion-ax-c', text: 'A×C Fusionデザインを承認'})
+      });
+    } catch(e) {}
+    document.getElementById('confirm-btn').textContent = '✓ 確定しました';
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('selected'));
+  }
+</script>
+</body>
+</html>

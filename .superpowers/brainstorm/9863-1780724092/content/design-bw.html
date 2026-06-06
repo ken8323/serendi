@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serendi — B&W + Accent</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f0eeea;
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+    padding: 36px 20px 80px;
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #999;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 11px;
+    color: #bbb;
+    margin-bottom: 40px;
+  }
+
+  .columns {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .col {
+    width: 280px;
+    cursor: pointer;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: border-color 0.15s;
+    position: relative;
+  }
+  .col.selected { border-color: #111; }
+  .col.selected .check { opacity: 1; }
+
+  .check {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #111;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 10;
+  }
+
+  .accent-label {
+    padding: 8px 12px;
+    font-size: 9px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    color: #666;
+    background: #e8e5e0;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Shared screen styles */
+  .phone {
+    background: #fff;
+    padding: 26px 20px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ph-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 44px;
+  }
+  .ph-logo {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    color: #111;
+  }
+  .ph-nav {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #bbb;
+    font-weight: 600;
+  }
+
+  .ph-eyebrow {
+    font-size: 8px;
+    letter-spacing: 4px;
+    font-weight: 700;
+    color: #ccc;
+    margin-bottom: 10px;
+  }
+  .ph-title {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #111;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .ph-sub {
+    font-size: 10px;
+    color: #aaa;
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 200px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 2px;
+    padding: 12px 18px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    cursor: pointer;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .divider { height: 1px; background: #f0f0f0; margin: 16px 0; }
+
+  .sheet-eyebrow {
+    font-size: 8px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    color: #ccc;
+    margin-bottom: 6px;
+  }
+  .sheet-title {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+    color: #111;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .section-label {
+    font-size: 8px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    margin-bottom: 7px;
+  }
+  .summary {
+    font-size: 10px;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .points { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .point { display: flex; gap: 8px; align-items: flex-start; }
+  .pnum { font-size: 8px; font-weight: 800; margin-top: 2px; min-width: 14px; }
+  .ptext { font-size: 10px; color: #777; line-height: 1.5; }
+  .tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag { font-size: 8px; color: #bbb; border: 1px solid #eee; border-radius: 2px; padding: 3px 7px; letter-spacing: 1px; }
+
+  .ph-footer {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 9px;
+    color: #ccc;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+
+  .confirm-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #111;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 14px 32px;
+    border-radius: 2px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border: none;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .confirm-bar.visible { opacity: 1; pointer-events: all; }
+</style>
+</head>
+<body>
+
+<h2>WHITE × BLACK + ACCENT COLOR</h2>
+<p class="subtitle">アクセントカラーを選んでください — クリックで選択</p>
+
+<div class="columns">
+
+  <!-- A: Electric Blue -->
+  <div class="col" id="col-blue" onclick="selectCol(this, 'blue', 'Electric Blue')">
+    <div class="check">✓ SELECT</div>
+    <div class="accent-label"><span>A. ELECTRIC BLUE</span><span style="color:#2563eb;">■</span></div>
+    <div class="phone">
+      <div class="ph-header">
+        <div class="ph-logo">Serendi</div>
+        <div class="ph-nav">COLLECTION</div>
+      </div>
+      <div class="ph-eyebrow">UNKNOWN FIELD</div>
+      <div class="ph-title">今日、あなたが<br>絶対に引かない<br>知識を引く。</div>
+      <div class="ph-sub">日常から遠く離れた未知の領域を、AIが1枚のカードに凝縮します。</div>
+      <button class="btn" style="background:#2563eb; color:#fff;">DRAW ↗</button>
+      <div class="divider"></div>
+      <div class="sheet-eyebrow">UNKNOWN FIELD #042</div>
+      <div class="sheet-title">深海生物の<br>生存戦略</div>
+      <div class="section-label" style="color:#2563eb;">ESSENCE</div>
+      <div class="summary">光のない深海で、生物たちは発光・高圧耐性・超低代謝という極端な進化を遂げた。</div>
+      <div class="section-label" style="color:#2563eb;">3 POINTS</div>
+      <div class="points">
+        <div class="point"><span class="pnum" style="color:#2563eb;">01</span><span class="ptext">不凍タンパク質で水圧による圧壊を防ぐ</span></div>
+        <div class="point"><span class="pnum" style="color:#2563eb;">02</span><span class="ptext">アンコウの発光は共生細菌によるもの</span></div>
+        <div class="point"><span class="pnum" style="color:#2563eb;">03</span><span class="ptext">代謝は浅海魚の1/10以下。1食で数ヶ月</span></div>
+      </div>
+      <div class="tags"><span class="tag">マリアナ海溝</span><span class="tag">生物発光</span></div>
+      <div class="ph-footer">↻ DRAW AGAIN</div>
+    </div>
+  </div>
+
+  <!-- B: Vermillion -->
+  <div class="col" id="col-red" onclick="selectCol(this, 'red', 'Vermillion')">
+    <div class="check">✓ SELECT</div>
+    <div class="accent-label"><span>B. VERMILLION</span><span style="color:#dc2626;">■</span></div>
+    <div class="phone">
+      <div class="ph-header">
+        <div class="ph-logo">Serendi</div>
+        <div class="ph-nav">COLLECTION</div>
+      </div>
+      <div class="ph-eyebrow">UNKNOWN FIELD</div>
+      <div class="ph-title">今日、あなたが<br>絶対に引かない<br>知識を引く。</div>
+      <div class="ph-sub">日常から遠く離れた未知の領域を、AIが1枚のカードに凝縮します。</div>
+      <button class="btn" style="background:#dc2626; color:#fff;">DRAW ↗</button>
+      <div class="divider"></div>
+      <div class="sheet-eyebrow">UNKNOWN FIELD #042</div>
+      <div class="sheet-title">深海生物の<br>生存戦略</div>
+      <div class="section-label" style="color:#dc2626;">ESSENCE</div>
+      <div class="summary">光のない深海で、生物たちは発光・高圧耐性・超低代謝という極端な進化を遂げた。</div>
+      <div class="section-label" style="color:#dc2626;">3 POINTS</div>
+      <div class="points">
+        <div class="point"><span class="pnum" style="color:#dc2626;">01</span><span class="ptext">不凍タンパク質で水圧による圧壊を防ぐ</span></div>
+        <div class="point"><span class="pnum" style="color:#dc2626;">02</span><span class="ptext">アンコウの発光は共生細菌によるもの</span></div>
+        <div class="point"><span class="pnum" style="color:#dc2626;">03</span><span class="ptext">代謝は浅海魚の1/10以下。1食で数ヶ月</span></div>
+      </div>
+      <div class="tags"><span class="tag">マリアナ海溝</span><span class="tag">生物発光</span></div>
+      <div class="ph-footer">↻ DRAW AGAIN</div>
+    </div>
+  </div>
+
+  <!-- C: Forest Green -->
+  <div class="col" id="col-green" onclick="selectCol(this, 'green', 'Forest Green')">
+    <div class="check">✓ SELECT</div>
+    <div class="accent-label"><span>C. FOREST GREEN</span><span style="color:#16a34a;">■</span></div>
+    <div class="phone">
+      <div class="ph-header">
+        <div class="ph-logo">Serendi</div>
+        <div class="ph-nav">COLLECTION</div>
+      </div>
+      <div class="ph-eyebrow">UNKNOWN FIELD</div>
+      <div class="ph-title">今日、あなたが<br>絶対に引かない<br>知識を引く。</div>
+      <div class="ph-sub">日常から遠く離れた未知の領域を、AIが1枚のカードに凝縮します。</div>
+      <button class="btn" style="background:#16a34a; color:#fff;">DRAW ↗</button>
+      <div class="divider"></div>
+      <div class="sheet-eyebrow">UNKNOWN FIELD #042</div>
+      <div class="sheet-title">深海生物の<br>生存戦略</div>
+      <div class="section-label" style="color:#16a34a;">ESSENCE</div>
+      <div class="summary">光のない深海で、生物たちは発光・高圧耐性・超低代謝という極端な進化を遂げた。</div>
+      <div class="section-label" style="color:#16a34a;">3 POINTS</div>
+      <div class="points">
+        <div class="point"><span class="pnum" style="color:#16a34a;">01</span><span class="ptext">不凍タンパク質で水圧による圧壊を防ぐ</span></div>
+        <div class="point"><span class="pnum" style="color:#16a34a;">02</span><span class="ptext">アンコウの発光は共生細菌によるもの</span></div>
+        <div class="point"><span class="pnum" style="color:#16a34a;">03</span><span class="ptext">代謝は浅海魚の1/10以下。1食で数ヶ月</span></div>
+      </div>
+      <div class="tags"><span class="tag">マリアナ海溝</span><span class="tag">生物発光</span></div>
+      <div class="ph-footer">↻ DRAW AGAIN</div>
+    </div>
+  </div>
+
+</div>
+
+<button class="confirm-bar" id="confirm-btn" onclick="confirmSelection()">このカラーで進める →</button>
+
+<script>
+  let chosen = null;
+
+  function selectCol(el, key, label) {
+    document.querySelectorAll('.col').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    chosen = { choice: key, text: label };
+    document.getElementById('confirm-btn').classList.add('visible');
+  }
+
+  function confirmSelection() {
+    if (!chosen) return;
+    try {
+      fetch('/select', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(chosen)
+      });
+    } catch(e) {}
+    document.getElementById('confirm-btn').textContent = '✓ ' + chosen.text + ' — 確定';
+  }
+</script>
+</body>
+</html>

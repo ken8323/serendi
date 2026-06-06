@@ -1,0 +1,49 @@
+<h2>Serendiのデザイン方向性</h2>
+<p class="subtitle">アプリ全体のビジュアルトーンを選んでください</p>
+
+<div class="cards">
+  <div class="card" data-choice="dark" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); padding: 20px; min-height: 180px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px;">
+      <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 16px; width: 100%; max-width: 240px; backdrop-filter: blur(10px);">
+        <div style="color: #a78bfa; font-size: 11px; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px;">THEME</div>
+        <div style="color: white; font-size: 15px; font-weight: 700; margin-bottom: 8px;">深海生物の生存戦略</div>
+        <div style="color: rgba(255,255,255,0.6); font-size: 11px; line-height: 1.5;">光のない世界で進化した、驚異の生命体たち</div>
+      </div>
+      <button style="background: linear-gradient(90deg, #7c3aed, #4f46e5); color: white; border: none; border-radius: 50px; padding: 10px 24px; font-size: 13px; cursor: pointer; font-weight: 700;">✦ 未知の領域を引く</button>
+    </div>
+    <div class="card-body">
+      <h3>A. ダーク＆ミステリアス</h3>
+      <p>宇宙・深海を想起させる深い紫・紺のグラデーション。「未知との遭遇」感を最大に演出。神秘的でワクワクするトーン。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="clean" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f8fafc; padding: 20px; min-height: 180px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; border-bottom: 1px solid #e2e8f0;">
+      <div style="background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px; width: 100%; max-width: 240px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+        <div style="color: #6366f1; font-size: 11px; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px;">THEME</div>
+        <div style="color: #1e293b; font-size: 15px; font-weight: 700; margin-bottom: 8px;">深海生物の生存戦略</div>
+        <div style="color: #64748b; font-size: 11px; line-height: 1.5;">光のない世界で進化した、驚異の生命体たち</div>
+      </div>
+      <button style="background: #6366f1; color: white; border: none; border-radius: 50px; padding: 10px 24px; font-size: 13px; cursor: pointer; font-weight: 700;">✦ 未知の領域を引く</button>
+    </div>
+    <div class="card-body">
+      <h3>B. クリーン＆モダン</h3>
+      <p>白ベース＋インディゴのアクセント。読みやすく洗練されたミニマルデザイン。shadcn/uiのデフォルトに近い落ち着いたトーン。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="warm" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: linear-gradient(135deg, #ffecd2, #fcb69f); padding: 20px; min-height: 180px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px;">
+      <div style="background: white; border-radius: 16px; padding: 16px; width: 100%; max-width: 240px; box-shadow: 0 4px 20px rgba(252,182,159,0.4);">
+        <div style="color: #f97316; font-size: 11px; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px;">THEME</div>
+        <div style="color: #1e293b; font-size: 15px; font-weight: 700; margin-bottom: 8px;">深海生物の生存戦略</div>
+        <div style="color: #64748b; font-size: 11px; line-height: 1.5;">光のない世界で進化した、驚異の生命体たち</div>
+      </div>
+      <button style="background: linear-gradient(90deg, #f97316, #ef4444); color: white; border: none; border-radius: 50px; padding: 10px 24px; font-size: 13px; cursor: pointer; font-weight: 700;">✦ 未知の領域を引く</button>
+    </div>
+    <div class="card-body">
+      <h3>C. ウォーム＆エネルギッシュ</h3>
+      <p>オレンジ・ピーチのグラデーション。ガチャ・ゲームのようなワクワク感を前面に。親しみやすくポジティブなトーン。</p>
+    </div>
+  </div>
+</div>
