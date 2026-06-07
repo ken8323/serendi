@@ -6,7 +6,8 @@ import SetupScreen from '@/components/SetupScreen'
 import GachaScreen from '@/components/GachaScreen'
 import ResultScreen from '@/components/ResultScreen'
 import { getProfile, saveProfile, saveSheet } from '@/lib/storage'
-import type { Screen, Sheet, UserProfile } from '@/lib/types'
+import { computePreferences, loadFeedbackLog, recordFeedback } from '@/lib/feedback'
+import type { FeedbackRating, Screen, Sheet, UserProfile } from '@/lib/types'
 
 export default function Home() {
   const [screen, setScreen] = useState<Screen>('gacha')
@@ -14,6 +15,7 @@ export default function Home() {
   const [currentSheet, setCurrentSheet] = useState<Sheet | null>(null)
   const [isSaved, setIsSaved] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [feedback, setFeedback] = useState<FeedbackRating | null>(null)
 
   useEffect(() => {
     const stored = getProfile()
@@ -35,15 +37,17 @@ export default function Home() {
     if (!profile) return
     setIsLoading(true)
     try {
+      const preferences = computePreferences(loadFeedbackLog())
       const res = await fetch('/api/gacha', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profile),
+        body: JSON.stringify({ ...profile, preferences }),
       })
       const data = await res.json()
       if (!res.ok || !data.sheet) throw new Error(data.error ?? 'Unknown error')
       setCurrentSheet(data.sheet)
       setIsSaved(false)
+      setFeedback(null)
       setScreen('result')
     } catch {
       toast.error('もう一度お試しください')
@@ -64,6 +68,26 @@ export default function Home() {
     handleDraw()
   }
 
+  function handleFeedback(rating: FeedbackRating) {
+    if (!currentSheet) return
+    recordFeedback({
+      sheetId: currentSheet.id,
+      category: currentSheet.category || 'unknown',
+      rating,
+    })
+    setFeedback(rating)
+  }
+
+  function handleRejectGenre() {
+    if (!currentSheet) return
+    recordFeedback({
+      sheetId: currentSheet.id,
+      category: currentSheet.category || 'unknown',
+      rating: 'dislike',
+    })
+    handleRedraw()
+  }
+
   if (screen === 'setup') {
     return (
       <SetupScreen
@@ -79,9 +103,12 @@ export default function Home() {
       <ResultScreen
         sheet={currentSheet}
         isSaved={isSaved}
+        feedback={feedback}
         onSave={handleSave}
         onRedraw={handleRedraw}
         onBack={() => setScreen('gacha')}
+        onFeedback={handleFeedback}
+        onRejectGenre={handleRejectGenre}
       />
     )
   }

@@ -12,6 +12,7 @@ const mockProfile: UserProfile = { occupation: 'エンジニア', domain: 'Web�
 const makeSheet = (id: string): Sheet => ({
   id,
   theme: `テーマ${id}`,
+  category: '自然科学',
   summary: 'サマリー',
   points: ['p1', 'p2', 'p3'],
   next_keywords: ['kw1', 'kw2'],
