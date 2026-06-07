@@ -6,6 +6,7 @@ export type Sheet = {
   points: [string, string, string]
   next_keywords: string[]
   createdAt: number
+  mood?: string
 }
 
 export type UserProfile = {

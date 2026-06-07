@@ -87,6 +87,27 @@ describe('POST /api/gacha', () => {
     expect(userContent).not.toContain('傾向')
   })
 
+  it('injects mood into the user message when provided', async () => {
+    await POST(
+      makeRequest({
+        occupation: 'エンジニア',
+        domain: 'Web開発',
+        mood: '自然科学',
+      })
+    )
+    const call = messagesCreate.mock.calls[0][0]
+    const userContent = call.messages[0].content as string
+    expect(userContent).toContain('自然科学')
+    expect(userContent).toContain('指定ジャンル')
+  })
+
+  it('omits mood block when mood is not provided', async () => {
+    await POST(makeRequest({ occupation: 'エンジニア', domain: 'Web開発' }))
+    const call = messagesCreate.mock.calls[0][0]
+    const userContent = call.messages[0].content as string
+    expect(userContent).not.toContain('指定ジャンル')
+  })
+
   it('falls back to category="unknown" if AI omits it', async () => {
     messagesCreate.mockResolvedValueOnce({
       content: [
