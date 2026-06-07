@@ -3,17 +3,29 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import ShareCard from '@/components/ShareCard'
-import type { Sheet } from '@/lib/types'
+import type { FeedbackRating, Sheet } from '@/lib/types'
 
 type Props = {
   sheet: Sheet
   isSaved: boolean
+  feedback: FeedbackRating | null
   onSave: () => void
   onRedraw: () => void
   onBack: () => void
+  onFeedback: (rating: FeedbackRating) => void
+  onRejectGenre: () => void
 }
 
-export default function ResultScreen({ sheet, isSaved, onSave, onRedraw, onBack }: Props) {
+export default function ResultScreen({
+  sheet,
+  isSaved,
+  feedback,
+  onSave,
+  onRedraw,
+  onBack,
+  onFeedback,
+  onRejectGenre,
+}: Props) {
   const [showShare, setShowShare] = useState(false)
 
   return (
@@ -85,7 +97,35 @@ export default function ResultScreen({ sheet, isSaved, onSave, onRedraw, onBack 
         ))}
       </div>
 
-      <div className="mt-10 pt-4 border-t border-gray-100">
+      <div className="mt-10 pt-4 border-t border-gray-100 flex flex-col gap-2">
+        <div className="grid grid-cols-3 gap-2">
+          <button
+            onClick={() => onFeedback('like')}
+            className={`text-xs tracking-[2px] font-bold border h-10 transition-colors ${
+              feedback === 'like'
+                ? 'bg-black text-white border-black'
+                : 'border-gray-200 text-gray-400 hover:border-black hover:text-black'
+            }`}
+          >
+            ★ LIKE
+          </button>
+          <button
+            onClick={() => onFeedback('dislike')}
+            className={`text-xs tracking-[2px] font-bold border h-10 transition-colors ${
+              feedback === 'dislike'
+                ? 'bg-black text-white border-black'
+                : 'border-gray-200 text-gray-400 hover:border-black hover:text-black'
+            }`}
+          >
+            ✕ SKIP
+          </button>
+          <button
+            onClick={onRejectGenre}
+            className="text-xs tracking-[2px] font-bold border border-gray-200 text-gray-400 h-10 hover:border-black hover:text-black transition-colors"
+          >
+            ↻ OTHER
+          </button>
+        </div>
         <Button
           onClick={onRedraw}
           variant="outline"
