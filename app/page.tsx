@@ -7,6 +7,7 @@ import GachaScreen from '@/components/GachaScreen'
 import ResultScreen from '@/components/ResultScreen'
 import { getProfile, saveProfile, saveSheet } from '@/lib/storage'
 import { computePreferences, loadFeedbackLog, recordFeedback } from '@/lib/feedback'
+import { AUTO_MOOD_KEY, getMoodLabel } from '@/lib/moods'
 import type { FeedbackRating, Screen, Sheet, UserProfile } from '@/lib/types'
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
   const [isSaved, setIsSaved] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [feedback, setFeedback] = useState<FeedbackRating | null>(null)
+  const [selectedMood, setSelectedMood] = useState<string>(AUTO_MOOD_KEY)
 
   useEffect(() => {
     const stored = getProfile()
@@ -38,14 +40,16 @@ export default function Home() {
     setIsLoading(true)
     try {
       const preferences = computePreferences(loadFeedbackLog())
+      const moodLabel = getMoodLabel(selectedMood)
       const res = await fetch('/api/gacha', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...profile, preferences }),
+        body: JSON.stringify({ ...profile, preferences, mood: moodLabel }),
       })
       const data = await res.json()
       if (!res.ok || !data.sheet) throw new Error(data.error ?? 'Unknown error')
-      setCurrentSheet(data.sheet)
+      const sheet: Sheet = moodLabel ? { ...data.sheet, mood: moodLabel } : data.sheet
+      setCurrentSheet(sheet)
       setIsSaved(false)
       setFeedback(null)
       setScreen('result')
@@ -113,5 +117,13 @@ export default function Home() {
     )
   }
 
-  return <GachaScreen isLoading={isLoading} onDraw={handleDraw} onEditProfile={() => setScreen('setup')} />
+  return (
+    <GachaScreen
+      isLoading={isLoading}
+      selectedMood={selectedMood}
+      onMoodChange={setSelectedMood}
+      onDraw={handleDraw}
+      onEditProfile={() => setScreen('setup')}
+    />
+  )
 }

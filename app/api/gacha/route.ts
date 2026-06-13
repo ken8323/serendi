@@ -28,16 +28,27 @@ category はテーマのジャンルを表す短いラベルで、自由に命�
   "next_keywords": ["キーワード1", "キーワード2"]
 }`
 
-function buildUserMessage(occupation: string, domain: string, preferences?: Preferences): string {
+function buildUserMessage(
+  occupation: string,
+  domain: string,
+  preferences?: Preferences,
+  mood?: string,
+): string {
   const base = `以下は私が普段関わっていて十分に知っている領域です。これらから**最も遠い**未知のテーマを1つ選んでください。これらに関連する分野は絶対に選ばないでください。
 
 避けるべき領域:
 - 職業: ${occupation}
 - 関わっている分野: ${domain}`
 
-  if (!preferences) return base
-  const { liked_categories, disliked_categories } = preferences
-  if (liked_categories.length === 0 && disliked_categories.length === 0) return base
+  const moodBlock = mood
+    ? `\n\n【指定ジャンル】\n今回は「${mood}」というジャンルのテーマを選んでください。ただし、上記の職業/分野からの距離ルールは引き続き守ること。`
+    : ''
+
+  const prefs = preferences ?? { liked_categories: [], disliked_categories: [] }
+  const { liked_categories, disliked_categories } = prefs
+  if (liked_categories.length === 0 && disliked_categories.length === 0) {
+    return `${base}${moodBlock}`
+  }
 
   const liked = liked_categories.length
     ? `- 過去に高評価だったジャンル: ${liked_categories.join(', ')}\n  → 似た方向性のテーマを優先的に検討してよい`
@@ -46,7 +57,7 @@ function buildUserMessage(occupation: string, domain: string, preferences?: Pref
     ? `- 最近不評だったジャンル: ${disliked_categories.join(', ')}\n  → 当面これらは避ける`
     : ''
 
-  return `${base}
+  return `${base}${moodBlock}
 
 【私の傾向】
 ${[liked, disliked].filter(Boolean).join('\n')}
@@ -55,10 +66,11 @@ ${[liked, disliked].filter(Boolean).join('\n')}
 
 export async function POST(request: Request) {
   const body = await request.json()
-  const { occupation, domain, preferences } = body as {
+  const { occupation, domain, preferences, mood } = body as {
     occupation?: string
     domain?: string
     preferences?: Preferences
+    mood?: string
   }
 
   if (!occupation || !domain) {
@@ -74,7 +86,7 @@ export async function POST(request: Request) {
     messages: [
       {
         role: 'user',
-        content: buildUserMessage(occupation, domain, preferences),
+        content: buildUserMessage(occupation, domain, preferences, mood),
       },
     ],
   })

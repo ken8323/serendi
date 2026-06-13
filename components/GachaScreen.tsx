@@ -1,14 +1,23 @@
 'use client'
 
 import Link from 'next/link'
+import { MOODS } from '@/lib/moods'
 
 type Props = {
   isLoading: boolean
+  selectedMood: string
+  onMoodChange: (key: string) => void
   onDraw: () => void
   onEditProfile: () => void
 }
 
-export default function GachaScreen({ isLoading, onDraw, onEditProfile }: Props) {
+export default function GachaScreen({
+  isLoading,
+  selectedMood,
+  onMoodChange,
+  onDraw,
+  onEditProfile,
+}: Props) {
   return (
     <div className="min-h-screen flex flex-col px-8 py-12 max-w-lg mx-auto">
       <div className="flex justify-between items-baseline mb-20">
@@ -37,6 +46,29 @@ export default function GachaScreen({ isLoading, onDraw, onEditProfile }: Props)
         <p className="text-sm text-gray-400 leading-[1.9] max-w-[260px] border-l-2 border-black pl-4">
           あなたが一生検索しないような未知の領域を、AIが1枚のカードに凝縮します。
         </p>
+
+        <div>
+          <p className="text-xs tracking-[3px] font-bold text-gray-400 mb-3">MOOD</p>
+          <div className="flex flex-wrap gap-2">
+            {MOODS.map(mood => {
+              const active = mood.key === selectedMood
+              return (
+                <button
+                  key={mood.key}
+                  onClick={() => onMoodChange(mood.key)}
+                  className={`text-xs tracking-wide font-bold border px-3 py-1.5 transition-colors ${
+                    active
+                      ? 'bg-black text-white border-black'
+                      : 'border-gray-200 text-gray-500 hover:border-black hover:text-black'
+                  }`}
+                >
+                  <span className="mr-1">{mood.emoji}</span>
+                  {mood.label}
+                </button>
+              )
+            })}
+          </div>
+        </div>
 
         <button
           onClick={onDraw}
